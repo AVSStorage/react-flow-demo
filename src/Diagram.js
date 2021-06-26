@@ -62,12 +62,12 @@ const initialElements = [
   ];
   const getNodeId = () => `randomnode_${+new Date()}`;
  
-  export default () => {
+  const Diagram =  () => {
     const [elements, setElements] = useState(initialElements);
     const onElementsRemove = useCallback((elementsToRemove) => {
       
       setElements((els) => removeElements(elementsToRemove, els));
-    },[elements]);
+    },[]);
     const onConnect = (params) => {
         console.log(elements);
         setElements(addEdge({...params, arrowHeadType: 'arrowclosed',  
@@ -133,3 +133,5 @@ const initialElements = [
       </>
     );
   };
+
+  export default Diagram;
