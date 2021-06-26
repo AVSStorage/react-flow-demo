@@ -7,9 +7,7 @@ import ConnectionLine from './ConnectionLine';
 const nodeTypes = {
     selectorNode: CustomElement,
 };
-const edgeTypes = {
-    buttonedge: ButtonEdge,
-  };
+
 const initialElements = [
     {
       id: '2',
@@ -27,6 +25,7 @@ const initialElements = [
     {
         id: '3',
         type: 'selectorNode',
+        arrowHeadType: 'arrowclosed',
         data: {title: 'Тема 16',
         tasks: 10, 
         lessons: 10,
@@ -35,7 +34,7 @@ const initialElements = [
         математической 
         физики в частных 
         производных второго порядка`},
-        position: { x: 450 , y: 100 },
+        position: { x: 600 , y: 100 },
     },
     {
         id: '4',
@@ -49,6 +48,15 @@ const initialElements = [
         физики в частных 
         производных второго порядка`},
         position: { x: 550 , y: 600 },
+    },
+    {
+        id: 'reactflow__edge-3d-4a',
+        source: 2,
+        target: 4,
+        arrowHeadType: 'arrow',  
+    
+    style: { stroke: 'red', strokeWidth: '5px', filter: 'drop-shadow( 3px 3px 7px rgba(255, 0, 0, .5))' }
+
     }
     
   ];
@@ -56,10 +64,17 @@ const initialElements = [
  
   export default () => {
     const [elements, setElements] = useState(initialElements);
-    const onElementsRemove = (elementsToRemove) =>
+    const onElementsRemove = useCallback((elementsToRemove) => {
+      
       setElements((els) => removeElements(elementsToRemove, els));
-    const onConnect = (params) => setElements(addEdge(params, elements));
-   
+    },[elements]);
+    const onConnect = (params) => {
+        console.log(elements);
+        setElements(addEdge({...params, arrowHeadType: 'arrowclosed',  
+        type: 'buttonedge',
+    style: { stroke: 'red', strokeWidth: '5px', filter: 'drop-shadow( 3px 3px 7px rgba(255, 0, 0, .5))' }}, elements))};
+    
+     
     const onAdd = useCallback(() => {
         const newNode = {
           id: getNodeId(),
@@ -89,10 +104,20 @@ const initialElements = [
     backgroundColor: 'white'
     }}>
         <ReactFlow
-         edgeTypes={edgeTypes}
+         edgeTypes={{
+            buttonedge: (props) => <ButtonEdge {...props} data={{onChange: (id) => {
+                setElements((els) => {
+                   
+                    const elementsToRemove = els.filter(item => item.id === id)
+                    return removeElements(elementsToRemove, els)});
+            }}} />
+        }}
          connectionLineComponent={ConnectionLine}
           nodeTypes={nodeTypes}
           elements={elements}
+          snapToGrid={true}
+          
+          arrowHeadColor={'red'}
           onElementsRemove={onElementsRemove}
           onConnect={onConnect}
           deleteKeyCode={46} /* 'delete'-key */

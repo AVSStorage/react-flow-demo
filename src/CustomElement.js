@@ -1,27 +1,22 @@
 import React, { memo } from 'react';
 
 import { Handle } from 'react-flow-renderer';
-const isValidConnection = (connection) => { console.log('connection', connection); return true};
 
-export default memo(({data}) => {
+export default memo(({data, selected}) => {
  
   return (
     <>
       <Handle
       id="a"
-        type="target"
+        type="taget"
         position="left"
-        onConnect={(params) => console.log('handle onConnect', params)}
-        isValidConnection={isValidConnection}
         style={{ background: '#555' }}
       
       />
         <Handle
         id="b"
         type="target"
-        isValidConnection={isValidConnection}
         position="top"
-        onConnect={(params) => console.log('handle onConnect', params)}
         style={{ background: 'green' }}
       
       />
@@ -29,6 +24,7 @@ export default memo(({data}) => {
       zIndex: 100,
       backgroundColor: 'white',
       borderRadius: '20px',
+      border: selected ? '1px solid': 'none',
 height: 301, boxShadow: '0px 10px 15px 5px rgba(197, 197, 197, 0.25)', color: 'black'}}>
         <header style={{display: 'flex', justifyContent: 'space-around'}}>
             <p style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
@@ -51,18 +47,16 @@ height: 301, boxShadow: '0px 10px 15px 5px rgba(197, 197, 197, 0.25)', color: 'b
       </article>
     
       <Handle
-      id="d"
+      id="c"
         type="target"
         position="right"
-        onConnect={(params) => console.log('handle onConnect', params)}
-        isValidConnection={isValidConnection}
+  
         style={{ right: 0, top: '50%', background: '#555' }}
       />
       <Handle
-      id="n"
-        type="=target"
-        onConnect={(params) => console.log('handle onConnect', params)}
-        isValidConnection={isValidConnection}
+      id="d"
+        type="source"
+      
         position="bottom"
         style={{ bottom: 10, top: 'auto', background: '#555' }}
       />

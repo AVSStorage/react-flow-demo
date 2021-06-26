@@ -1,5 +1,5 @@
 import {
-    getBezierPath,
+    getSmoothStepPath,
     getEdgeCenter,
     getMarkerEnd,
   } from 'react-flow-renderer';
@@ -7,10 +7,10 @@ import {
 
   const foreignObjectSize = 40;
 
-const onEdgeClick = (evt, id) => {
-  evt.stopPropagation();
-  alert(`remove ${id}`);
-};
+// const onEdgeClick = (evt, id) => {
+//   evt.stopPropagation();
+//   alert(`remove ${id}`);
+// };
 
 export default function CustomEdge({
   id,
@@ -25,11 +25,12 @@ export default function CustomEdge({
   arrowHeadType,
   markerEndId,
 }) {
-  const edgePath = getBezierPath({
+  const edgePath = getSmoothStepPath({
     sourceX,
     sourceY,
     sourcePosition,
     targetX,
+    borderRadius: 10,
     targetY,
     targetPosition,
   });
@@ -40,7 +41,7 @@ export default function CustomEdge({
     targetX,
     targetY,
   });
-
+  console.log(edgeCenterX, edgeCenterY)
   return (
     <>
       <path
@@ -53,7 +54,7 @@ export default function CustomEdge({
       <foreignObject
         width={foreignObjectSize}
         height={foreignObjectSize}
-        x={edgeCenterX - foreignObjectSize / 2}
+        x={sourceX - foreignObjectSize / 2}
         y={edgeCenterY - foreignObjectSize / 2}
         className="edgebutton-foreignobject"
         requiredExtensions="http://www.w3.org/1999/xhtml"
@@ -61,7 +62,7 @@ export default function CustomEdge({
         <body>
           <button
             className="edgebutton"
-            onClick={(event) => onEdgeClick(event, id)}
+            onClick={(event) => { data.onChange(id) } }
           >
             ×
           </button>
